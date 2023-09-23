@@ -1,12 +1,13 @@
 from flask import Flask, render_template
 from controllers.ClientesController import clientes
+from controllers.ProveedoresController import proveedores
 from config.config import DevelpmentConfig, ProductionConfig
 from flask_migrate import Migrate, upgrade
 from db import db, ma
 from flask_wtf import CSRFProtect
 
 
-ACTIVE_ENDPOINTS = [('/clientes',clientes)]
+ACTIVE_ENDPOINTS = [('/clientes',clientes), ('/proveedores', proveedores)]
 
 # Registro de los controladores
 # app.register_blueprint(sede_bp, url_prefix='/sede')
