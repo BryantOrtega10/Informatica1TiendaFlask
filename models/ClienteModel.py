@@ -21,12 +21,11 @@ class ClienteSchema(ma.SQLAlchemyAutoSchema):
 
 
 def registrar_cliente(nombre, correo, direccion, password):
-    cliente = Cliente(nombre = nombre, correo = correo,direccion = direccion, password= generate_password_hash(password, method="sha256"))
+    cliente = Cliente(nombre = nombre, correo = correo,direccion = direccion, password= generate_password_hash(password))
     db.session.add(cliente)
-    if db.session.commit():
-        cliente_schema = ClienteSchema()
-        return cliente_schema.dump(cliente)
-    return None
+    db.session.commit()    
+    cliente_schema = ClienteSchema()
+    return cliente_schema.dump(cliente)
 
 
 def modificar_cliente(id, nombre, correo, direccion):
@@ -47,9 +46,15 @@ def eliminar_cliente(id):
         return True       
     return None
 
+def vertificar_existencia_cliente(correo):
+    cliente = Cliente.query.filter_by(correo=correo).first()
+    if cliente != None:
+        return True
+    return False
+
 
 def cliente_login(correo, password):
-    cliente = Cliente.query.filter_by(correo=correo,password = generate_password_hash(password, method="sha256")).first()
+    cliente = Cliente.query.filter_by(correo=correo,password = generate_password_hash(password)).first()
     if cliente != None:
         return cliente
     return None
