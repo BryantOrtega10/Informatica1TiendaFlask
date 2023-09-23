@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<header>
+    <h1>Tienda Online</h1>
+</header>
+<div class="container">
+    <div class="card">
+        <form method="post" id="login-form">
+            <div class="card-header">
+                <h2>Iniciar sesión</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="correo" name="correo" placeholder="prueba@prueba.com">
+                    <label for="correo">Correo</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="contrasena" placeholder="Contraseña">
+                    <label for="contrasena">Contraseña</label>
+                </div>
+
+            </div>
+            <div class="footer">
+                <input type="button" value="Iniciar Sesion" />
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const form = document.querySelector("#login-form");
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const data = new FormData(form);
+        console.log(Array.from(data));
+        try {
+            const res = await fetch(
+                form.action,
+                {
+                    method: 'POST',
+                    body: data,
+                },
+            );
+            const resData = await res.json();
+            console.log(resData);
+        } catch (errData) {
+            console.log(errData.error);
+        }
+    });
+
+</script>
+{% endblock %}
