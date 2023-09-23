@@ -19,6 +19,18 @@ class ProveedorSchema(ma.SQLAlchemyAutoSchema):
         fields = ["id", "nombre", "correo", "direccion"]
 
 
+def obtener_proveedores():
+    proveedores_qs = Proveedor.query.all()
+    proveedor_schema = ProveedorSchema()
+    proveedores = [proveedor_schema.dump(proveedor) for proveedor in proveedores_qs]
+    return proveedores
+
+def obtener_provedor(id):
+    proveedor = proveedor.query.filter.by(id=id)
+    if proveedor != None:
+        return proveedor
+    return None
+
 def registrar_proveedor(nombre, correo, direccion):
     proveedor = Proveedor(nombre = nombre, correo = correo,direccion = direccion)
     db.session.add(proveedor)
