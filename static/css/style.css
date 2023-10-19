@@ -1,0 +1,12 @@
+footer{
+    background-color: #F0F0F0;
+    padding: 15px 0;
+}
+.min-vw-auto{
+    min-height: calc(100vh - 185px);
+}
+header {
+    background: black;
+    color: #FFF;
+    padding: 12px 0;
+}

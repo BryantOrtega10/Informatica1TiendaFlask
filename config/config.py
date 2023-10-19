@@ -5,8 +5,11 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATION = False
 
 class ProductionConfig(Config):
+    DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://tienda:tienda@localhost/tienda'
+    SECRET_KEY = '5e3d937f09a95865e69e2b91920bf642929bb1edbc45f2fbe38eb57fc037aa56'
 
 class DevelpmentConfig(Config):
     DEBUG = True
-    SECRET_KEY = 'c43b00a63a652b54e6bd6035b4294253150f481dc4951313d3c2b3f2fcb6'
+    SECRET_KEY = '5e3d937f09a95865e69e2b91920bf642929bb1edbc45f2fbe38eb57fc037aa56'
+    # SECRET_KEY = '5e3d937f09a95865e69e2b91920bf642929bb1edbc45f2fbe38eb57fc037aa56'
