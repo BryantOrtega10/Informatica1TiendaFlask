@@ -19,20 +19,14 @@
                 <div class="col-8">
                     <h1><a href="{{url_for('tienda.inicio')}}">Tienda Online</a></h1>
                 </div>
-                {% if session['correo'] %}
-                    <div class="col-2">Hola {{session['correo']}}</div>
-                    <div class="col-1">
-                        <a href="{{url_for('ventas.carrito')}}">Carrito</a>
-                    </div>
-                    <div class="col-1">
-                        <a href="{{url_for('clientes.loggout')}}">Salir</a>
+                {% if session['a_correo'] %}
+                    <div class="col-2">Hola {{session['a_correo']}}</div>
+                    <div class="col-2">
+                        <a href="{{url_for('administrador.loggout')}}">Salir</a>
                     </div>
                 {% else %}
-                    <div class="col-2">
-                        <a href="{{url_for('clientes.login')}}">Iniciar Sesión</a>
-                    </div>
-                    <div class="col-2">
-                        <a href="{{url_for('clientes.registrarme')}}">Registrarme</a>
+                    <div class="col-2 text-end">
+                        <a href="{{url_for('administrador.login')}}">Iniciar Sesión</a>
                     </div>
                 {% endif %}
             </div>

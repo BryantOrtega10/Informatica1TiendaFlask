@@ -2,13 +2,20 @@ from flask import Flask, render_template
 from controllers.ClientesController import clientes
 from controllers.TiendaController import tienda
 from controllers.VentasController import ventas
+from controllers.AdministradorController import administrador
+from controllers.AdministrarTiendaController import admin
+
 from config.config import DevelpmentConfig, ProductionConfig
 from flask_migrate import Migrate, upgrade
 from db import db, ma
 from flask_wtf import CSRFProtect
 
 
-ACTIVE_ENDPOINTS = [('/clientes',clientes), ('/',tienda), ('/ventas',ventas)]
+ACTIVE_ENDPOINTS = [('/clientes',clientes), 
+                    ('/',tienda), 
+                    ('/carrito',ventas), 
+                    ('/administrador',administrador),
+                    ('/admin',admin)]
 
 
 def create_app(config=ProductionConfig):

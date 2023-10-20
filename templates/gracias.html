@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Gracias {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-3 d-flex justify-content-center align-items-center min-vw-auto flex-column">
+           <h1>¡Gracias!</h1>
+           <p>Gracias por comprar en nuestra tienda</p>
+           <a href="{{url_for('tienda.inicio')}}" class="btn btn-success">Volver al inicio</a>
+        </div>
+    </div>
+    
+
+</div>
+{% endblock %}

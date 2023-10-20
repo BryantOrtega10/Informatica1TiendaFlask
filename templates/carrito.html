@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %} Carrito {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container productos">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <h3 class="titulo-categoria text-dark">Carrito</h3>
+            </div>
+        </div>    
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            <figure class="image-cont-tabla"><img src="http://127.0.0.1:5000/static/uploads/{{item.producto.imagen}}" alt="{{item.producto.nombre}}"></figure>
+                            <b>{{item.producto.nombre}}</b>
+                        </td>
+                        <td>
+                            ${{ '{0:,}'.format(item.producto.precio | int) }}
+                        </td>
+                        <td>
+                            <form action="{{url_for('ventas.modificar_productos')}}" method="post">
+                                <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="idproducto" id="idproducto" value="{{ item.producto.id }}">
+                                <input type="number" min="1" max="{{item.producto.stock}}" name="cantidad" value="{{item.cantidad}}" class="me-4" />
+                                <button type="submit" class="btn btn-primary">Modificar</button>
+                            </form>
+                        </td>
+                        <td>${{ '{0:,}'.format((item.producto.precio * item.cantidad) | int) }}</td>
+                        <td>
+                            <form action="{{url_for('ventas.quitar_productos')}}" method="post">
+                                <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="idproducto" id="idproducto" value="{{ item.producto.id }}">
+                                <button type="submit" class="btn btn-danger">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Subtotal</th>
+                        <td colspan="2">${{ '{0:,}'.format(subtotal | int) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <form action="{{url_for('ventas.comprar')}}" method="post" class="text-center">
+                <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-success btn-lg">Terminar Compra</button>
+            </form>
+            </div>
+        </div>            
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

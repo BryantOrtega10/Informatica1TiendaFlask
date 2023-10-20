@@ -9,6 +9,7 @@ class Producto(db.Model):
     precio = db.Column(db.Double, nullable=False)
     descripcion = db.Column(db.String(500), nullable=False)
     id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=True)
+    stock = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now())
 
@@ -16,7 +17,7 @@ class Producto(db.Model):
 class ProductoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Producto
-        fields = ["id", "nombre", "imagen", "precio", "descripcion","id_categoria"]
+        fields = ["id", "nombre", "imagen", "precio", "descripcion","id_categoria", "stock"]
 
 
 def registrar_producto(nombre, imagen, precio, descripcion):
@@ -49,7 +50,7 @@ def eliminar_producto(id):
 
 
 def producto_x_categoria(categoria):    
-    productos = Producto.query.filter_by(id_categoria = categoria).all();
+    productos = Producto.query.filter(Producto.id_categoria == categoria, Producto.stock >= 1).all();
     producto_schema = ProductoSchema()
     productos_res = [producto_schema.dump(producto) for producto in productos]
     return productos_res
@@ -59,3 +60,10 @@ def producto_x_id(id_producto):
     producto_schema = ProductoSchema()
     producto_res = producto_schema.dump(producto)
     return producto_res
+
+
+def restar_stock(id_producto,cantidad):    
+    producto = Producto.query.filter_by(id = id_producto).first();
+    producto.stock -= int(cantidad)
+    db.session.commit()
+    return True
