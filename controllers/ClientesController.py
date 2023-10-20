@@ -5,8 +5,16 @@ from models.ClienteModel import cliente_login, registrar_cliente, vertificar_exi
 
 clientes = Blueprint("clientes", __name__, url_prefix="/clientes")
 
+@clientes.route("/loggout", methods=["GET"])
+def loggout():
+    del session['correo'];
+    return redirect(url_for('tienda.inicio'))
+
 @clientes.route("/login", methods=["GET", "POST"])
 def login():
+    if 'correo' in session:
+        return redirect(url_for('tienda.inicio'))
+    
     if request.method == "POST":
         if 'correo' not in request.form or len(request.form.get('correo').strip()) == 0:
             return jsonify({"success": False, "error" : "Campo correo vacio"}) , HTTPStatus.BAD_REQUEST
@@ -21,6 +29,7 @@ def login():
             return jsonify({"success": False, "error" : "Usuario o contraseña incorrectos"}) , HTTPStatus.BAD_REQUEST
         
         session['correo'] = req_correo
+        session['id'] = clienteLoggedo["id"]
         return jsonify({"success": True, "message" : "Bienvenido!"}), HTTPStatus.OK
 
     return render_template("login.html")
@@ -28,6 +37,9 @@ def login():
 
 @clientes.route("/registrarme", methods=["GET", "POST"])
 def registrarme():
+    if 'correo' in session:
+        return redirect(url_for('tienda.inicio'))
+    
     if request.method == "POST":
         if 'nombre' not in request.form or len(request.form.get('nombre').strip()) == 0:
             return jsonify({"success": False, "error" : "Campo nombre vacio"}) , HTTPStatus.BAD_REQUEST
@@ -63,6 +75,7 @@ def registrarme():
             return jsonify({"success": False, "error" : "Error al registrar al cliente"}) , HTTPStatus.BAD_REQUEST
         
         session['correo'] = req_correo
+        session['id'] = registroCliente["id"]
         return jsonify({"success": True, "message" : "Bienvenido!"}), HTTPStatus.OK
 
     return render_template("registrarme.html")

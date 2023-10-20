@@ -63,8 +63,15 @@
                 },
             );
             const resData = await res.json();
-            console.log(resData);
+            if(resData.success){
+                alert(resData.message);
+                window.open('/','_self');
+            }
+            else{
+                alert(resData.error);
+            }
         } catch (errData) {
+            alert(errData.error);
             console.log(errData.error);
         }
     });

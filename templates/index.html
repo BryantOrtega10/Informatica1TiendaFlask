@@ -1,11 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B</title>
-</head>
-<body>
-    b
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %} Tienda {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container productos">
+    <div class="row">
+        {% for item_pc in productos_x_categoria %}
+            <div class="col-12">
+                <div class="row">
+                    <h3 class="titulo-categoria text-dark"><a class="text-dark" href="{{url_for('tienda.ver_prod_x_categoria', id_categoria = item_pc.categoria.id )}}">{{item_pc.categoria.nombre}}</a></h3>
+                </div>
+            </div>    
+            <div class="col-12">
+                <div class="row">
+                {% for producto in item_pc.productos %}
+                    <div class="col-12 col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <figure class="image-cont"><img src="http://127.0.0.1:5000/static/uploads/{{producto.imagen}}" class="card-img-top" alt="{{producto.nombre}}"></figure>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5 class="card-title">{{producto.nombre}}</h5>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="card-text text-end">${{ '{0:,}'.format(producto.precio | int) }}</p>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="card-footer text-end">
+                                <a href="{{url_for('tienda.ver_producto', id_producto = producto.id)}}" class="btn btn-success">Ver Producto</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}        
+                </div>
+            </div>            
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}
