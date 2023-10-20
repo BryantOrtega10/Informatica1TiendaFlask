@@ -15,10 +15,22 @@ class CategoriaSchema(ma.SQLAlchemyAutoSchema):
 
 
 def registrar_categoria(nombre):
-    cliente = Categoria(nombre = nombre)
-    db.session.add(cliente)
+    categoria = Categoria(nombre = nombre)
+    db.session.add(categoria)
     if db.session.commit():
-        cliente_schema = CategoriaSchema()
-        return cliente_schema.dump(cliente)
+        categoria_schema = CategoriaSchema()
+        return categoria_schema.dump(categoria)
     return None
 
+def consultar_categorias():
+    
+    categorias = Categoria.query.all()
+    categoria_schema = CategoriaSchema()
+    categorias_res = [categoria_schema.dump(categoria) for categoria in categorias]
+    return categorias_res
+
+def categoria_x_id(id_categoria):    
+    categoria = Categoria.query.filter_by(id = id_categoria).first()
+    categoria_schema = CategoriaSchema()
+    categoria_res = categoria_schema.dump(categoria)
+    return categoria_res

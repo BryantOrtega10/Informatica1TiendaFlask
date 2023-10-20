@@ -1,7 +1,5 @@
 from datetime import datetime
-from flask import jsonify
 from db import db, ma
-from werkzeug.security import generate_password_hash
 
 
 class Producto(db.Model):
@@ -10,6 +8,7 @@ class Producto(db.Model):
     imagen = db.Column(db.String(200), nullable=False)
     precio = db.Column(db.Double, nullable=False)
     descripcion = db.Column(db.String(500), nullable=False)
+    id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now())
 
@@ -17,7 +16,7 @@ class Producto(db.Model):
 class ProductoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Producto
-        fields = ["id", "nombre", "imagen", "precio", "descripcion"]
+        fields = ["id", "nombre", "imagen", "precio", "descripcion","id_categoria"]
 
 
 def registrar_producto(nombre, imagen, precio, descripcion):
@@ -49,8 +48,14 @@ def eliminar_producto(id):
     return None
 
 
-def producto_login(correo, password):
-    producto = Producto.query.filter_by(correo=correo,password = generate_password_hash(password, method="sha256")).first()
-    if producto != None:
-        return producto
-    return None
+def producto_x_categoria(categoria):    
+    productos = Producto.query.filter_by(id_categoria = categoria).all();
+    producto_schema = ProductoSchema()
+    productos_res = [producto_schema.dump(producto) for producto in productos]
+    return productos_res
+
+def producto_x_id(id_producto):    
+    producto = Producto.query.filter_by(id = id_producto).first();
+    producto_schema = ProductoSchema()
+    producto_res = producto_schema.dump(producto)
+    return producto_res

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %} Tienda {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="container productos">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{url_for('tienda.inicio')}}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{{url_for('tienda.ver_prod_x_categoria', id_categoria = categoria.id )}}">{{categoria.nombre}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{producto.nombre}}</li>
+                </ol>
+            </nav>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>            
+                    {% endfor %}                
+                {% endif %}
+            {% endwith %}
+
+            <div class="card producto-g" >
+                <div class="row g-0 align-items-strech">
+                    <div class="col-md-4">
+                        <figure class="image-cont">
+                            <img src="http://127.0.0.1:5000/static/uploads/{{producto.imagen}}" class="img-fluid rounded-start"
+                                alt="{{producto.nombre}}" />
+                        </figure>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h2 class="card-title">{{producto.nombre}}</h2>
+                            <p class="card-text">{{producto.descripcion}}</p>
+                            <p class="card-text text-end fs-3">${{ '{0:,}'.format(producto.precio | int) }}</p>                            
+                        </div>
+                        <div class="card-footer text-end">
+                            
+                            {% if session['correo'] %}
+                                <form action="{{url_for('ventas.agregar_productos')}}" method="post" class="row">
+                                    <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="idproducto" id="idproducto" value="{{ producto.id }}">
+                                    <input type="number" min="0" name="cantidad" value="1" class="text-end form-control col me-4" />
+                                    <button type="submit" class="btn btn-success col-4">Agregar al carrito</button>
+                                </form>
+                                
+                            {% else %}
+                                <p>Debes iniciar sesión para agregar productos a tu carrito</p>
+                            {% endif%}                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

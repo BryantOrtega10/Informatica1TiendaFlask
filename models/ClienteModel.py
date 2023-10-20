@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import jsonify
 from db import db, ma
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Cliente(db.Model):
@@ -9,7 +9,7 @@ class Cliente(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     correo = db.Column(db.String(100), nullable=False)
     direccion = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(100))
+    password = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now())
 
@@ -54,7 +54,9 @@ def vertificar_existencia_cliente(correo):
 
 
 def cliente_login(correo, password):
-    cliente = Cliente.query.filter_by(correo=correo,password = generate_password_hash(password)).first()
+    cliente = Cliente.query.filter_by(correo=correo).first()
     if cliente != None:
-        return cliente
+        if check_password_hash(cliente.password, password):
+            cliente_schema = ClienteSchema()
+            return cliente_schema.dump(cliente)
     return None

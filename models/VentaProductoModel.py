@@ -15,11 +15,15 @@ class VentaProductoSchema(ma.SQLAlchemyAutoSchema):
         fields = ["id_producto", "id_venta"]
 
 
-def registrar_venta_producto(id_producto, id_venta):
-    venta_producto = VentaProducto(id_producto = id_producto, id_venta = id_venta)
-    db.session.add(venta_producto)
-    if db.session.commit():
-        venta_producto_schema = VentaProductoSchema()
-        return venta_producto_schema.dump(venta_producto)
-    return None
+def agregar_cantidad(id_producto, id_venta, cantidad):
+    venta_producto = VentaProducto.query.filter_by(id_producto = id_producto, id_venta = id_venta).first()
+    if venta_producto != None:
+        venta_producto.cantidad += cantidad        
+    else:
+        venta_producto = VentaProducto(id_producto = id_producto, id_venta = id_venta, cantidad = cantidad)
+        db.session.add(venta_producto)
+
+    db.session.commit()
+    return True
+    
 

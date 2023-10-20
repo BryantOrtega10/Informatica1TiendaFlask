@@ -1,18 +1,15 @@
 from flask import Flask, render_template
 from controllers.ClientesController import clientes
+from controllers.TiendaController import tienda
+from controllers.VentasController import ventas
 from config.config import DevelpmentConfig, ProductionConfig
 from flask_migrate import Migrate, upgrade
 from db import db, ma
 from flask_wtf import CSRFProtect
 
 
-ACTIVE_ENDPOINTS = [('/clientes',clientes)]
+ACTIVE_ENDPOINTS = [('/clientes',clientes), ('/',tienda), ('/ventas',ventas)]
 
-# Registro de los controladores
-# app.register_blueprint(sede_bp, url_prefix='/sede')
-# app.register_blueprint(reserva_bp, url_prefix='/reserva')
-# app.register_blueprint(reportes_bp, url_prefix='/reportes')
-# app.register_blueprint(estadisticas_bp, url_prefix='/estadisticas')
 
 def create_app(config=ProductionConfig):
     app = Flask(__name__)
