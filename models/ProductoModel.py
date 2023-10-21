@@ -10,6 +10,7 @@ class Producto(db.Model):
     descripcion = db.Column(db.String(500), nullable=False)
     id_categoria = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=True)
     stock = db.Column(db.Integer, nullable=False, default=0)
+    id_proveedor = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now())
 
@@ -17,7 +18,7 @@ class Producto(db.Model):
 class ProductoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Producto
-        fields = ["id", "nombre", "imagen", "precio", "descripcion","id_categoria", "stock"]
+        fields = ["id", "nombre", "imagen", "precio", "descripcion","id_categoria", "stock", "id_proveedor"]
 
 
 def registrar_producto(nombre, imagen, precio, descripcion):

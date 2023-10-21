@@ -30,7 +30,7 @@ def agregar_productos():
     carrito = consultar_venta_carrito(session['id'])
     if carrito is None:
         carrito = crear_venta(session['id'])
-        
+    
     # Consultar si hay una VentaProducto para este producto
     agrego_cantidad = agregar_cantidad(req_idproducto, carrito["id"], req_cantidad)
     if agrego_cantidad == False:

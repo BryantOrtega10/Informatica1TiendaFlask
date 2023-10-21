@@ -4,7 +4,7 @@ from db import db, ma
 
 
 class VentaProducto(db.Model):
-    id_venta = db.Column(db.Integer, db.ForeignKey('categoria.id'), primary_key=True)
+    id_venta = db.Column(db.Integer, db.ForeignKey('venta.id'), primary_key=True)
     id_producto = db.Column(db.Integer, db.ForeignKey('producto.id'), primary_key=True)
     cantidad = db.Column(db.Integer, nullable=False)
 
