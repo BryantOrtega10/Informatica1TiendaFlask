@@ -2,6 +2,7 @@ from http import HTTPStatus
 from flask import Blueprint, jsonify, session, Response, request, render_template, redirect, url_for
 from models.CategoriaModel import consultar_categorias, categoria_x_id
 from models.ProductoModel import producto_x_categoria, producto_x_id
+from models.ProveedorModel import obtener_provedor
 
 tienda = Blueprint("tienda", __name__, url_prefix="/")
 

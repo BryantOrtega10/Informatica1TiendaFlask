@@ -50,3 +50,10 @@ figure.image-cont img.card-img-top {
     height: calc(100% - 55px);
     padding-top: 90px;
 }
+figure.image-cont-tabla {
+    display: inline-flex;
+    width: 100px;
+    height: 100px;
+    vertical-align: top;
+    margin-right: 25px;
+}

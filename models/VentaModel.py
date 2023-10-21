@@ -26,7 +26,6 @@ def crear_venta(id_cliente):
     db.session.commit()
     venta_schema = VentaSchema()
     return venta_schema.dump(venta)
-    # return None
 
 def consultar_venta_carrito(id_cliente):
     venta = Venta.query.filter_by(id_cliente = id_cliente, estado = 'C').first()
@@ -34,4 +33,13 @@ def consultar_venta_carrito(id_cliente):
         venta_schema = VentaSchema()
         return venta_schema.dump(venta)
     return None
+
+
+def cambiar_estado_venta(id_venta):
+    venta = Venta.query.filter_by(id = id_venta).first()
+    if venta != None:
+        venta.estado = 'V'
+        db.session.commit()
+        return True
+    return False
 

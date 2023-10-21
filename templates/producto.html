@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Tienda {% endblock %}
+{% block title %} {{producto.nombre}} {% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
@@ -36,18 +36,21 @@
                         <div class="card-body">
                             <h2 class="card-title">{{producto.nombre}}</h2>
                             <p class="card-text">{{producto.descripcion}}</p>
-                            <p class="card-text text-end fs-3">${{ '{0:,}'.format(producto.precio | int) }}</p>                            
+                            <p class="card-text text-end fs-3">${{ '{0:,}'.format(producto.precio | int) }}</p>
+                                                     
                         </div>
-                        <div class="card-footer text-end">
-                            
+                        <div class="card-footer text-end">                            
                             {% if session['correo'] %}
+                                {% if producto.stock > 0 %}
                                 <form action="{{url_for('ventas.agregar_productos')}}" method="post" class="row">
                                     <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="idproducto" id="idproducto" value="{{ producto.id }}">
-                                    <input type="number" min="0" name="cantidad" value="1" class="text-end form-control col me-4" />
+                                    <input type="number" min="1" max="{{producto.stock}}" name="cantidad" value="1" class="text-end form-control col me-4" />
                                     <button type="submit" class="btn btn-success col-4">Agregar al carrito</button>
                                 </form>
-                                
+                                {% else %}
+                                    <p>No hay unidades disponibles de este producto</p>
+                                {% endif%}  
                             {% else %}
                                 <p>Debes iniciar sesión para agregar productos a tu carrito</p>
                             {% endif%}                            

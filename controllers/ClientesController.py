@@ -8,6 +8,7 @@ clientes = Blueprint("clientes", __name__, url_prefix="/clientes")
 @clientes.route("/loggout", methods=["GET"])
 def loggout():
     del session['correo'];
+    del session['id'];
     return redirect(url_for('tienda.inicio'))
 
 @clientes.route("/login", methods=["GET", "POST"])
